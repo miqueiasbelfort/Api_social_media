@@ -114,10 +114,10 @@ router.put("/:id/unfollow", async (req, res) => {
             
             if(user.followers.includes(req.body.userId)){ //PT - varificar ser o id do usuário já está incluiso no followers
 
-                await user.updateOne({$pull: {followers: req.body.userId}}) //PT - Então adicionar o id do usuário no dado followers
-                //PT - o metodo push server da mesma forma que no array js convencional
+                await user.updateOne({$pull: {followers: req.body.userId}}) //PT - Então remover ele do dado followers
+                //PT - o metodo pull server como no js para remover o dado do array
                 
-                await currentUser.updateOne({$pull: {followings: req.params.id}}) //PT - E adicionar nos seguindos do usuário que clicou
+                await currentUser.updateOne({$pull: {followings: req.params.id}}) //PT - E remover ele de following também
                 res.status(200).json("user has been unfollowed")
 
             } else {
