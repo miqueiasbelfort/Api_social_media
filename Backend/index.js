@@ -7,6 +7,11 @@ const helmet = require("helmet")
 const morgan = require("morgan")
 const app = express()
 
+//routes
+const useRoutes = require("./routes/users")
+const authRoutes = require("./routes/auth")
+
+
 //connection wiith mongoose
 mongoose.connect(process.env.MONGO_URL,
     {useNewUrlParser: true, useUnifiedTopology: true}, () => {
@@ -18,9 +23,9 @@ app.use(express.json())
 app.use(helmet())
 app.use(morgan("common"))
 
-app.get("/", (req, res) => {
-    res.send("Welcome to homepage!")
-})
+app.use("/api/users", useRoutes)
+app.use("/api/auth", authRoutes)
+
 
 app.listen(5000, () => {
     console.log("Backend server is running!")
