@@ -10,6 +10,8 @@ const app = express()
 //routes
 const useRoutes = require("./routes/users")
 const authRoutes = require("./routes/auth")
+const postRoutes = require("./routes/posts")
+
 
 
 //connection wiith mongoose
@@ -25,6 +27,8 @@ app.use(morgan("common"))
 
 app.use("/api/users", useRoutes)
 app.use("/api/auth", authRoutes)
+app.use("/api/posts", postRoutes)
+
 
 
 app.listen(5000, () => {
