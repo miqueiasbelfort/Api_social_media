@@ -96,10 +96,31 @@ router.get("/:id", async (req, res) => {
     } catch (error) {
         res.status(500).json("")
     }
-    
+
 })
 
 
 //get timeline posts
+router.get("/timeline/all", async (req, res) => {
+    
+    try {
+        
+        const currentUser = await User.findById(req.body.userId)
+        const userPosts = await Post.find({userId: currentUser._id}) //todas as postagem do usuário
+        // vamos pegar o usuário atual e depois no array de seguidores 
+        // fazemos um map com os id dos seguidores e fizemos ele retornar todos esse usuário seguidos
+        const friendPosts = await Promise.all(
+            currentUser.followings.map(friendId => {
+               return Post.find({userId: friendId})
+            })  
+        )
+        // concatenar o userPost que são todas as postagens do usuário mais as dos que ele está seguindo
+        res.status(200).json(userPosts.concat(...friendPosts))
+
+    } catch (error) {
+        res.status(500).json(error)
+    }
+
+})
 
 module.exports = router
